@@ -18,6 +18,5 @@ namespace DataLayer.Entities
         //currency identifier
         public virtual string cc { get; set; }
 
-        public virtual ICollection<CurrencyRate> CurrencyRates { get; set; }
     }
 }

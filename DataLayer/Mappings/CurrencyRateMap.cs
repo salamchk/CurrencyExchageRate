@@ -16,8 +16,7 @@ namespace DataLayer.Mappings
             Map(x => x.CurId);
             Map(x => x.DateId);
             Map(x => x.Rate);
-            References(x => x.ExchangeDate).Cascade.SaveUpdate();
-            References(x => x.CurrencyData).Cascade.SaveUpdate();
+
         }
     }
 }
