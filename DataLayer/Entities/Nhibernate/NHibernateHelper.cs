@@ -16,7 +16,7 @@ namespace DataLayer.Entities.Nhibernate
         {
             ISessionFactory sessionFactory = Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2012.
-                ConnectionString(@"Data Source = TWINGO; Initial Catalog = TestDb;Integrated Security = True; Connect Timeout = 30; Encrypt = False;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False").ShowSql())
+                ConnectionString(@"Data Source = localhost; Initial Catalog = TestDb;Integrated Security = True; Connect Timeout = 30; Encrypt = False;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False").ShowSql())
                 .Mappings(mapping => mapping.FluentMappings.AddFromAssemblyOf<CurrencyData>().AddFromAssemblyOf<CurrencyRate>()
                 .AddFromAssemblyOf<ExchangeDate>()).ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
                 .BuildSessionFactory();

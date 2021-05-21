@@ -11,6 +11,11 @@ namespace CurrencyExchageRate.Models
 {
     public static class WebExchangeRate
     {
+        /// <summary>
+        /// Not Models
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns></returns>
         public static List<CurrencyExchangeRate> GetRates(string uri)
         {
             var request = WebRequest.Create(uri);

@@ -22,15 +22,22 @@ namespace CurrencyExchageRate.Controllers
 
         private readonly ILogger<HomeController> _logger;
 
+        /// <summary>
+        /// Interfaces: 
+        /// IDataProvider - work with data
+        /// IApiProvider 
+        /// </summary>
+        /// <param name="logger"></param>
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
 
+        routing Exchange2
         [HttpGet]
         public ActionResult ExchangeRate()
         {
-
+            //Add Error handling with logging
             var session = NHibernateHelper.OpenSession();
             var currencyDatas = (from data in session.Query<CurrencyData>() select data).ToList();
             var date = (from exDate in session.Query<ExchangeDate>() where exDate.exDate == DateTime.Today select exDate).ToList().FirstOrDefault();
@@ -51,6 +58,7 @@ namespace CurrencyExchageRate.Controllers
             else
             {
                 // var books = linq.ToList();
+                // const, config file
                 var uri = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
                 var rates = WebExchangeRate.GetRates(uri);
                 date = new ExchangeDate() { exDate = DateTime.Today };
@@ -81,10 +89,12 @@ namespace CurrencyExchageRate.Controllers
             }
         }
 
+        //Change ur to Exchange2
         [HttpPost]
         public ContentResult ExchangeRate(DateTime date, string currency)
         {
             CurrencyExchangeRate selectedCurrency;
+            //const or config
             var uri =
             $"https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date={date.ToString("yyyyMMdd")}&json";
             var session = NHibernateHelper.OpenSession();
@@ -132,6 +142,8 @@ namespace CurrencyExchageRate.Controllers
                 selectedCurrency =
                     WebExchangeRate.GetRates(uri).Where(cur => cur.cc == currency).FirstOrDefault();
             }
+
+            //raws data - no html, use JS to format result
             return new ContentResult()
             {
                 ContentType = "text/html",

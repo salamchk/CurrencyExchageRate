@@ -42,6 +42,7 @@ namespace CurrencyExchageRate
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            // Add Swagger
             app.UseRouting();
 
             app.UseAuthorization();
