@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace CurrencyExchageRate.Interfaces
 {
-    public interface IDataBankProvider
+    public interface IDataBankApiProvider
     {
-        List<CurrencyExchangeRate> GetRates(string uri);
+        List<ExchangeRate> GetRates(string uri);
     }
 }

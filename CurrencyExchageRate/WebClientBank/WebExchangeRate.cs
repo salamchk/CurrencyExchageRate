@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace CurrencyExchageRate.Models
 {
-    public class WebExchangeRate : IDataBankProvider
+    public class WebExchangeRate : IDataBankApiProvider
     {
         private static WebExchangeRate _webExchangeRate;
 
@@ -23,7 +23,7 @@ namespace CurrencyExchageRate.Models
             return _webExchangeRate ?? new WebExchangeRate();
         }
 
-        public List<CurrencyExchangeRate> GetRates(string uri)
+        public List<ExchangeRate> GetRates(string uri)
         {
             var request = WebRequest.Create(uri);
             request.Method = WebRequestMethods.Http.Get;
@@ -36,7 +36,7 @@ namespace CurrencyExchageRate.Models
                     webResponce = streamReader.ReadToEnd();
                 }
             }
-            var listOfCurrencies = JsonConvert.DeserializeObject<List<CurrencyExchangeRate>>(webResponce);
+            var listOfCurrencies = JsonConvert.DeserializeObject<List<ExchangeRate>>(webResponce);
             return listOfCurrencies;
         }
     }

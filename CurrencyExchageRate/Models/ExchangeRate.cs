@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CurrencyExchageRate.Models
 {
-    public class CurrencyExchangeRate
+    public class ExchangeRate
     {
         [JsonProperty(PropertyName = "r030")]
         public int Indetifier { get; set; }

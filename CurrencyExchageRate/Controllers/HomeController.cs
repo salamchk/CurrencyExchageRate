@@ -38,7 +38,7 @@ namespace CurrencyExchageRate.Controllers
             {
 
                 var ratesFromDB = (from curRate in session.Query<CurrencyRate>() where curRate.DateId == date.ID select curRate).ToList();
-                var rates = ratesFromDB.Select(rate => new CurrencyExchangeRate()
+                var rates = ratesFromDB.Select(rate => new ExchangeRate()
                 {
                     Rate = rate.Rate,
                     FullName = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.txt).SingleOrDefault(),
@@ -83,7 +83,7 @@ namespace CurrencyExchageRate.Controllers
         [HttpPost]
         public ContentResult ExchangeRate(DateTime date, string currency)
         {
-            CurrencyExchangeRate selectedCurrency;
+            ExchangeRate selectedCurrency;
             var uri =
             $"https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date={date.ToString("yyyyMMdd")}&json";
             var session = NHibernateHelper.OpenSession();
@@ -93,7 +93,7 @@ namespace CurrencyExchageRate.Controllers
             {
 
                 var ratesFromDB = (from curRate in session.Query<CurrencyRate>() where curRate.DateId == dateFromDb.ID select curRate).ToList();
-                var rates = ratesFromDB.Select(rate => new CurrencyExchangeRate()
+                var rates = ratesFromDB.Select(rate => new ExchangeRate()
                 {
                     Rate = rate.Rate,
                     FullName = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.txt).SingleOrDefault(),
