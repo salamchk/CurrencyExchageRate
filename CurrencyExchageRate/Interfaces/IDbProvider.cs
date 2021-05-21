@@ -10,5 +10,6 @@ namespace CurrencyExchageRate.Interfaces
         public ISession Session { get;}
 
         List<ExchangeRate> GetCurrencyExchangeRate();
+        List<ExchangeRate> GetCurrencyExchangeRateByTime(DateTime time);
     }
 }

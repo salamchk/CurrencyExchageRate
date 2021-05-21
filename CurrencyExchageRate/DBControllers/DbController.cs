@@ -16,9 +16,11 @@ namespace CurrencyExchageRate.DBControllers
     {
         public ISession Session { get; }
 
+        private const string connectionString = "Data Source = TWINGO; Initial Catalog = TestDb;Integrated Security = True; Connect Timeout = 30; Encrypt = False;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
+
         public DbController()
         {
-            Session = NHibernateHelper.OpenSession(ConfigurationManager.AppSettings["connectionString"]);
+            Session = NHibernateHelper.OpenSession(connectionString);
         }
 
         public List<ExchangeRate> GetCurrencyExchangeRate()

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -13,7 +14,7 @@ namespace CurrencyExchageRate.Models
     public class WebExchangeRate : IDataBankApiProvider
     {
         private static WebExchangeRate _webExchangeRate;
-
+        private const string partOfUR = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=";
         private WebExchangeRate()
         {
         }
@@ -23,8 +24,9 @@ namespace CurrencyExchageRate.Models
             return _webExchangeRate ?? new WebExchangeRate();
         }
 
-        public List<ExchangeRate> GetRates(string uri)
+        public List<ExchangeRate> GetRates(DateTime time)
         {
+            var uri = partOfUR + time.ToString("yyyyMMdd") + @"&json"; 
             var request = WebRequest.Create(uri);
             request.Method = WebRequestMethods.Http.Get;
             string webResponce;

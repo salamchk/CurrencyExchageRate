@@ -9,6 +9,6 @@ namespace CurrencyExchageRate.Interfaces
 {
     public interface IDataBankApiProvider
     {
-        List<ExchangeRate> GetRates(string uri);
+        List<ExchangeRate> GetRates(DateTime time);
     }
 }

@@ -1,4 +1,4 @@
-﻿@model List<CurrencyExchangeRate>
+﻿@model List<ExchangeRate>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -13,7 +13,7 @@
             <select id="currencyName" name="currency">
                 @foreach (var item in Model)
                 {
-                    <option value="@item.cc">@item.txt</option>
+                    <option value="@item.ShortName">@item.FullName</option>
                 }
             </select>
 
