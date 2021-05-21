@@ -9,19 +9,19 @@ namespace CurrencyExchageRate.Models
     public class CurrencyExchangeRate
     {
         [JsonProperty(PropertyName = "r030")]
-        public int r030 { get; set; }
+        public int Indetifier { get; set; }
 
         [JsonProperty(PropertyName = "txt")]
-        public string txt { get; set; }
+        public string FullName { get; set; }
 
         [JsonProperty(PropertyName = "rate")]
-        public float rate { get; set; }
+        public float Rate { get; set; }
 
         [JsonProperty(PropertyName ="cc")]
-        public string cc { get; set; }
+        public string ShortName { get; set; }
 
         [JsonProperty(PropertyName ="exchangedate")]
-        public string exchangedate { get; set; }
+        public string ExchangeDate { get; set; }
 
     }
 }

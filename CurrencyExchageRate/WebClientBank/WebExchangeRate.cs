@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using CurrencyExchageRate.Interfaces;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,9 +10,20 @@ using System.Threading.Tasks;
 
 namespace CurrencyExchageRate.Models
 {
-    public static class WebExchangeRate
+    public class WebExchangeRate : IDataBankProvider
     {
-        public static List<CurrencyExchangeRate> GetRates(string uri)
+        private static WebExchangeRate _webExchangeRate;
+
+        private WebExchangeRate()
+        {
+        }
+
+        public static WebExchangeRate GetWebExchangeRate()
+        {
+            return _webExchangeRate ?? new WebExchangeRate();
+        }
+
+        public List<CurrencyExchangeRate> GetRates(string uri)
         {
             var request = WebRequest.Create(uri);
             request.Method = WebRequestMethods.Http.Get;

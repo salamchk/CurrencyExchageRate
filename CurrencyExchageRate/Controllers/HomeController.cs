@@ -40,17 +40,16 @@ namespace CurrencyExchageRate.Controllers
                 var ratesFromDB = (from curRate in session.Query<CurrencyRate>() where curRate.DateId == date.ID select curRate).ToList();
                 var rates = ratesFromDB.Select(rate => new CurrencyExchangeRate()
                 {
-                    rate = rate.Rate,
-                    txt = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.txt).SingleOrDefault(),
-                    r030 = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.r030).SingleOrDefault(),
-                    cc = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.cc).SingleOrDefault(),
-                    exchangedate = date.exDate.ToShortDateString()
+                    Rate = rate.Rate,
+                    FullName = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.txt).SingleOrDefault(),
+                    Indetifier = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.r030).SingleOrDefault(),
+                    ShortName = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.cc).SingleOrDefault(),
+                    ExchangeDate = date.exDate.ToShortDateString()
                 }).ToList();
                 return View(rates);
             }
             else
             {
-                // var books = linq.ToList();
                 var uri = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
                 var rates = WebExchangeRate.GetRates(uri);
                 date = new ExchangeDate() { exDate = DateTime.Today };
@@ -60,9 +59,9 @@ namespace CurrencyExchageRate.Controllers
                 {
                     currencyDatas = rates.Select(rate => new CurrencyData
                     {
-                        cc = rate.cc,
-                        txt = rate.txt,
-                        r030 = rate.r030
+                        cc = rate.ShortName,
+                        txt = rate.FullName,
+                        r030 = rate.Indetifier
                     }).ToList();
                     foreach (var item in currencyDatas)
                         session.Save(item);
@@ -70,9 +69,9 @@ namespace CurrencyExchageRate.Controllers
                 var ratesToDb = rates.Select(rate =>
                 new CurrencyRate()
                 {
-                    Rate = rate.rate,
+                    Rate = rate.Rate,
                     DateId = date.ID,
-                    CurId = currencyDatas.Where(data => data.r030 == rate.r030).Select(data => data.ID).Single()
+                    CurId = currencyDatas.Where(data => data.r030 == rate.Indetifier).Select(data => data.ID).Single()
                 });
                 foreach (var item in ratesToDb)
                     session.Save(item);
@@ -96,13 +95,13 @@ namespace CurrencyExchageRate.Controllers
                 var ratesFromDB = (from curRate in session.Query<CurrencyRate>() where curRate.DateId == dateFromDb.ID select curRate).ToList();
                 var rates = ratesFromDB.Select(rate => new CurrencyExchangeRate()
                 {
-                    rate = rate.Rate,
-                    txt = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.txt).SingleOrDefault(),
-                    r030 = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.r030).SingleOrDefault(),
-                    cc = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.cc).SingleOrDefault(),
-                    exchangedate = dateFromDb.exDate.ToString()
+                    Rate = rate.Rate,
+                    FullName = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.txt).SingleOrDefault(),
+                    Indetifier = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.r030).SingleOrDefault(),
+                    ShortName = currencyDatas.Where(data => data.ID == rate.CurId).Select(data => data.cc).SingleOrDefault(),
+                    ExchangeDate = dateFromDb.exDate.ToString()
                 });
-                selectedCurrency = rates.Where(rate => rate.cc == currency).SingleOrDefault();
+                selectedCurrency = rates.Where(rate => rate.ShortName == currency).SingleOrDefault();
             }
             else
             {
@@ -113,9 +112,9 @@ namespace CurrencyExchageRate.Controllers
                 {
                     currencyDatas = rates.Select(rate => new CurrencyData
                     {
-                        cc = rate.cc,
-                        txt = rate.txt,
-                        r030 = rate.r030
+                        cc = rate.ShortName,
+                        txt = rate.FullName,
+                        r030 = rate.Indetifier
                     }).ToList();
                     foreach (var item in currencyDatas)
                         session.Save(item);
@@ -123,20 +122,20 @@ namespace CurrencyExchageRate.Controllers
                 var ratesToDb = rates.Select(rate =>
                 new CurrencyRate()
                 {
-                    Rate = rate.rate,
+                    Rate = rate.Rate,
                     DateId = dateFromDb.ID,
-                    CurId = currencyDatas.Where(data => data.r030 == rate.r030).Select(data => data.ID).Single()
+                    CurId = currencyDatas.Where(data => data.r030 == rate.Indetifier).Select(data => data.ID).Single()
                 });
                 foreach (var item in ratesToDb)
                     session.Save(item);
                 selectedCurrency =
-                    WebExchangeRate.GetRates(uri).Where(cur => cur.cc == currency).FirstOrDefault();
+                    WebExchangeRate.GetRates(uri).Where(cur => cur.ShortName == currency).FirstOrDefault();
             }
             return new ContentResult()
             {
                 ContentType = "text/html",
                 StatusCode = (int)HttpStatusCode.OK,
-                Content = $"<h1>{selectedCurrency.exchangedate}</h1><h2>1 {selectedCurrency.cc} = {selectedCurrency.rate} UAH</h2>"
+                Content = $"<h1>{selectedCurrency.ExchangeDate}</h1><h2>1 {selectedCurrency.ShortName} = {selectedCurrency.Rate} UAH</h2>"
             };
 
         }
