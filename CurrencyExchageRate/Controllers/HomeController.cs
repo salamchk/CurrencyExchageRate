@@ -18,6 +18,7 @@ using System.Reflection;
 
 namespace CurrencyExchageRate.Controllers
 {
+   
     public class HomeController : Controller
     {
 
@@ -28,8 +29,12 @@ namespace CurrencyExchageRate.Controllers
         {
             _logger = logger;
         }
-        //RoutePrefix("Exchange2");
-        [HttpGet]
+        /// <summary>
+        /// For Change ur on Exchange2:
+        /// [HttpGet("Exchange2")]
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("")]
         public ActionResult ExchangeRate()
         {
             try
@@ -46,8 +51,9 @@ namespace CurrencyExchageRate.Controllers
                 return BadRequest();
             }
         }
-        //RoutePrefix("Exchange2");
-        [HttpPost]
+
+
+        [HttpPost("")]
         public ActionResult ExchangeRate(string date)
         {
             try
