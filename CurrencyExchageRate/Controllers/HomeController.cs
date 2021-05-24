@@ -28,7 +28,7 @@ namespace CurrencyExchageRate.Controllers
         {
             _logger = logger;
         }
-
+        //RoutePrefix("Exchange2");
         [HttpGet]
         public ActionResult ExchangeRate()
         {
@@ -46,7 +46,7 @@ namespace CurrencyExchageRate.Controllers
                 return BadRequest();
             }
         }
-
+        //RoutePrefix("Exchange2");
         [HttpPost]
         public ActionResult ExchangeRate(string date)
         {
