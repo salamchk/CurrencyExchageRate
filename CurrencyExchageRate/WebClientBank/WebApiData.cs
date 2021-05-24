@@ -30,11 +30,9 @@ namespace CurrencyExchageRate.Models
             string webResponce;
             using (WebResponse response = request.GetResponse())
             {
-                using (Stream data = response.GetResponseStream())
-                {
-                    StreamReader streamReader = new StreamReader(data);
-                    webResponce = streamReader.ReadToEnd();
-                }
+                using Stream data = response.GetResponseStream();
+                StreamReader streamReader = new StreamReader(data);
+                webResponce = streamReader.ReadToEnd();
             }
             var listOfCurrencies = JsonConvert.DeserializeObject<List<ExchangeRate>>(webResponce);
             return listOfCurrencies;

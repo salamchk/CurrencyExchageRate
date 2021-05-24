@@ -46,8 +46,9 @@ namespace CurrencyExchageRate.Controllers
                     return View(db.GetCurrencyExchangeRate());
                 else return BadRequest();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogCritical($"LogCritical {e.Message}");
                 return BadRequest();
             }
         }
