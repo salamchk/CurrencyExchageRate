@@ -1,5 +1,6 @@
 ﻿using CurrencyExchageRate.Interfaces;
 using Newtonsoft.Json;
+using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,22 +12,19 @@ using System.Threading.Tasks;
 
 namespace CurrencyExchageRate.Models
 {
-    public class WebExchangeRate : IDataBankApiProvider
+    public class WebApiData : IDataProvider
     {
-        private static WebExchangeRate _webExchangeRate;
         private const string partOfUR = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=";
-        private WebExchangeRate()
+
+        public ISession Session => throw new NotImplementedException();
+
+        public WebApiData()
         {
         }
 
-        public static WebExchangeRate GetWebExchangeRate()
+        public List<ExchangeRate> GetCurrencyExchangeRate(DateTime time)
         {
-            return _webExchangeRate ?? new WebExchangeRate();
-        }
-
-        public List<ExchangeRate> GetRates(DateTime time)
-        {
-            var uri = partOfUR + time.ToString("yyyyMMdd") + @"&json"; 
+            var uri = partOfUR + time.ToString("yyyyMMdd") + @"&json";
             var request = WebRequest.Create(uri);
             request.Method = WebRequestMethods.Http.Get;
             string webResponce;
@@ -40,6 +38,11 @@ namespace CurrencyExchageRate.Models
             }
             var listOfCurrencies = JsonConvert.DeserializeObject<List<ExchangeRate>>(webResponce);
             return listOfCurrencies;
+        }
+
+        public List<ExchangeRate> GetCurrencyExchangeRate()
+        {
+            return GetCurrencyExchangeRate(DateTime.Today);
         }
     }
 }

@@ -10,6 +10,7 @@ using NHibernate.Dialect;
 using NHibernate.Driver;
 using NHibernate.Transform;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -20,7 +21,7 @@ namespace CurrencyExchageRate.Controllers
     public class HomeController : Controller
     {
 
-        
+
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger)
@@ -31,18 +32,44 @@ namespace CurrencyExchageRate.Controllers
         [HttpGet]
         public ActionResult ExchangeRate()
         {
-            DbController db = new DbController();
-
-
-                return View(db.GetCurrencyExchangeRate());
+            try
+            {
+                DataDB db = new DataDB();
+                List<ExchangeRate> rates;
+                rates = db.GetCurrencyExchangeRate();
+                if (rates != null && rates.Count > 0)
+                    return View(db.GetCurrencyExchangeRate());
+                else return BadRequest();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [HttpPost]
-        public ContentResult ExchangeRate(DateTime date, string currency)
+        public ActionResult ExchangeRate(string date)
         {
-            DbController db = new DbController();
-            var rates = db.GetCurrencyExchangeRateByTime(date);
-            return new ContentResult();
+            try
+            {
+                DataDB db = new DataDB();
+                List<ExchangeRate> rates;
+                if (date != null && DateTime.TryParse(date, out DateTime selectedDate))
+                {
+                    rates = db.GetCurrencyExchangeRate(selectedDate);
+                }
+                else
+                {
+                    rates = db.GetCurrencyExchangeRate();
+                }
+                if (rates != null && rates.Count > 0)
+                    return View(rates);
+                else return BadRequest();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

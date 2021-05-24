@@ -12,23 +12,23 @@ using System.Threading.Tasks;
 
 namespace CurrencyExchageRate.DBControllers
 {
-    public class DbController : IDbProvider
+    public class DataDB : IDataProvider
     {
         public ISession Session { get; }
 
         private const string connectionString = "Data Source = TWINGO; Initial Catalog = TestDb;Integrated Security = True; Connect Timeout = 30; Encrypt = False;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
 
-        public DbController()
+        public DataDB()
         {
             Session = NHibernateHelper.OpenSession(connectionString);
         }
 
         public List<ExchangeRate> GetCurrencyExchangeRate()
         {
-            return GetCurrencyExchangeRateByTime(DateTime.Today);
+            return GetCurrencyExchangeRate(DateTime.Today);
         }
 
-        public List<ExchangeRate> GetCurrencyExchangeRateByTime(DateTime time)
+        public List<ExchangeRate> GetCurrencyExchangeRate(DateTime time)
         {
             var currentDate = GetExchangeDate(time);
             if (currentDate != null)
@@ -43,7 +43,7 @@ namespace CurrencyExchageRate.DBControllers
             {
                 currentDate = new ExchangeDate() { exDate = time };
                 SaveDateInDb(currentDate);
-                var rates = WebExchangeRate.GetWebExchangeRate().GetRates(currentDate.exDate);
+                var rates = new WebApiData().GetCurrencyExchangeRate(currentDate.exDate);
                 var datasAboutCurrencies = GetCurrencyDatas();
                 if (datasAboutCurrencies == null)
                 {
@@ -63,8 +63,8 @@ namespace CurrencyExchageRate.DBControllers
                 }));
                 return rates;
             }
-
         }
+
 
         private void SaveCurrencyData(IEnumerable<CurrencyData> datas)
         {
@@ -109,5 +109,7 @@ namespace CurrencyExchageRate.DBControllers
             foreach (var rate in rates)
                 Session.Save(rate);
         }
+
+
     }
 }

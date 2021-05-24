@@ -1,4 +1,5 @@
-﻿@model List<ExchangeRate>
+﻿@using System.Linq
+@model List<ExchangeRate>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -8,19 +9,33 @@
     </div>
     <form method="post">
         <div>
-            <input type="date" name="date" min="2012-06-04"
-                   max=@DateTime.Now.ToString("yyyy-MM-dd") value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-            <select id="currencyName" name="currency">
-                @foreach (var item in Model)
+            <input id="date-field" type="date" name="date" min="2012-06-04"
+                   max=@DateTime.Now.ToString("yyyy-MM-dd") value="@DateTime.Parse( @Model[0].ExchangeDate).ToString("yyyy-MM-dd")" />
+            <input type="submit" value="Change Date" />
+        </div>
+        <div>
+            <div>
+                1
+                <select id="currencyName" name="currency">
+                    @foreach (var item in Model)
                 {
-                    <option value="@item.ShortName">@item.FullName</option>
+                    <option id="@item.ShortName" value=@item.Rate>@item.FullName</option>
                 }
-            </select>
-
-            <input type="submit" value="Send" name="CurrencyName" />
-
+                </select> = <b id="text-field"></b> UAH
+            </div>
         </div>
     </form>
-
 </div>
+
+<script>
+    const select = document.getElementById('currencyName');
+    const date = document.getElementById('date-field');
+    const text = document.getElementById('text-field');
+    text.innerHTML = select.value;
+
+    select.addEventListener('change', (event) => {
+        const selectedCurrency = event.target.value;
+        text.innerHTML =  selectedCurrency;
+    });
+</script>
 
