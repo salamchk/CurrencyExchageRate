@@ -8,6 +8,7 @@ namespace CurrencyExchageRate.Models
 {
     public class CurrencyExchangeRate
     {
+        //MEanibngful names
         [JsonProperty(PropertyName = "r030")]
         public int r030 { get; set; }
 
