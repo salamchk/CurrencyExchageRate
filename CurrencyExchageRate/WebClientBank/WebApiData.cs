@@ -12,19 +12,19 @@ using System.Threading.Tasks;
 
 namespace CurrencyExchageRate.Models
 {
-    public class WebApiData : IDataProvider
+    public class WebApiData : IApiProvider
     {
-        private const string partOfUR = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?date=";
-
+        private readonly string _partOfUr;
         public ISession Session => throw new NotImplementedException();
 
-        public WebApiData()
+        public WebApiData(string partOfUr)
         {
+            _partOfUr = partOfUr;
         }
 
         public List<ExchangeRate> GetCurrencyExchangeRate(DateTime time)
         {
-            var uri = partOfUR + time.ToString("yyyyMMdd") + @"&json";
+            var uri = _partOfUr + time.ToString("yyyyMMdd") + @"&json";
             var request = WebRequest.Create(uri);
             request.Method = WebRequestMethods.Http.Get;
             string webResponce;

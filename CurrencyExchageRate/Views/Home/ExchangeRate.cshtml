@@ -1,5 +1,4 @@
 ﻿@using System.Linq
-@model List<ExchangeRate>
 @{
     ViewData["Title"] = "Home Page";
 }
@@ -7,35 +6,22 @@
     <div style="text-align: center; vertical-align: middle;">
         <h1>Today : @DateTime.Now.ToString("dd.MM.yyyy")</h1>
     </div>
-    <form method="post">
+    <form >
         <div>
             <input id="date-field" type="date" name="date" min="2012-06-04"
-                   max=@DateTime.Now.ToString("yyyy-MM-dd") value="@DateTime.Parse( @Model[0].ExchangeDate).ToString("yyyy-MM-dd")" />
-            <input type="submit" value="Change Date" />
+                   max=@DateTime.Now.ToString("yyyy-MM-dd") value="@DateTime.Now.ToString("yyyy-MM-dd")" />
         </div>
         <div>
             <div>
                 1
                 <select id="currencyName" name="currency">
-                    @foreach (var item in Model)
-                {
-                    <option id="@item.ShortName" value=@item.Rate>@item.FullName</option>
-                }
                 </select> = <b id="text-field"></b> UAH
             </div>
         </div>
     </form>
 </div>
-
+<script src="~/js/site.js"></script>
 <script>
-    const select = document.getElementById('currencyName');
-    const date = document.getElementById('date-field');
-    const text = document.getElementById('text-field');
-    text.innerHTML = select.value;
-
-    select.addEventListener('change', (event) => {
-        const selectedCurrency = event.target.value;
-        text.innerHTML =  selectedCurrency;
-    });
+   
 </script>
 

@@ -1,10 +1,13 @@
 ﻿
-using CurrencyExchageRate.DBControllers;
+using CurrencyExchageRate.DB;
+using CurrencyExchageRate.Interfaces;
 using CurrencyExchageRate.Models;
 using DataLayer.Entities;
 using DataLayer.Entities.Nhibernate;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using NHibernate.Cfg;
 using NHibernate.Dialect;
 using NHibernate.Driver;
@@ -18,16 +21,27 @@ using System.Reflection;
 
 namespace CurrencyExchageRate.Controllers
 {
-   
+
     public class HomeController : Controller
     {
 
 
         private readonly ILogger<HomeController> _logger;
+        private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
+        private readonly string _url;
+        private IDbProvider _dbProvider;
+        private IApiProvider _apiProvider;
 
-        public HomeController(ILogger<HomeController> logger)
+
+        public HomeController(ILogger<HomeController> logger, IConfiguration config, IDbProvider dbProvider, IApiProvider apiProvider)
         {
             _logger = logger;
+            _dbProvider = dbProvider;
+            _apiProvider = apiProvider;
+            _configuration = config;
+            _connectionString = _configuration.GetConnectionString("dbConnectionString");
+            _url = _configuration.GetSection("ApiUrl").Value;
         }
         /// <summary>
         /// For Change ur on Exchange2:
@@ -38,13 +52,8 @@ namespace CurrencyExchageRate.Controllers
         public ActionResult ExchangeRate()
         {
             try
-            {
-                DataDB db = new DataDB();
-                List<ExchangeRate> rates;
-                rates = db.GetCurrencyExchangeRate();
-                if (rates != null && rates.Count > 0)
-                    return View(db.GetCurrencyExchangeRate());
-                else return BadRequest();
+            { 
+                return View();
             }
             catch (Exception e)
             {
@@ -54,28 +63,28 @@ namespace CurrencyExchageRate.Controllers
         }
 
 
-        [HttpPost("")]
-        public ActionResult ExchangeRate(string date)
+        [HttpPost("{date}")]
+        public List<ExchangeRate> ExchangeRate(DateTime date)
         {
             try
-            {
-                DataDB db = new DataDB();
-                List<ExchangeRate> rates;
-                if (date != null && DateTime.TryParse(date, out DateTime selectedDate))
                 {
-                    rates = db.GetCurrencyExchangeRate(selectedDate);
+                List<ExchangeRate> rates;
+                rates = _dbProvider.GetCurrencyExchangeRate(date);
+                if(rates!=null && rates.Count>0 )
+                {
+                    return rates;
                 }
                 else
                 {
-                    rates = db.GetCurrencyExchangeRate();
+                    rates = _apiProvider.GetCurrencyExchangeRate(date);
+                    _dbProvider.SaveRates(rates);
+                    return rates;
                 }
-                if (rates != null && rates.Count > 0)
-                    return View(rates);
-                else return BadRequest();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest();
+                _logger.LogCritical($"LogCritical {e.Message}");
+                return null;
             }
         }
 
