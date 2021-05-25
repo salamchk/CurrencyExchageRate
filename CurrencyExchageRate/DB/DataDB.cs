@@ -10,17 +10,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CurrencyExchageRate.DBControllers
+namespace CurrencyExchageRate.DB
 {
-    public class DataDB : IDataProvider
+    public class DataDB : IDbProvider
     {
         public ISession Session { get; }
-
-        private const string connectionString = "Data Source = TWINGO; Initial Catalog = TestDb;Integrated Security = True; Connect Timeout = 30; Encrypt = False;TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False";
-
-        public DataDB()
+        public DataDB(string connectionString)
         {
             Session = NHibernateHelper.OpenSession(connectionString);
+
         }
 
         public List<ExchangeRate> GetCurrencyExchangeRate()
@@ -41,35 +39,16 @@ namespace CurrencyExchageRate.DBControllers
             }
             else
             {
-                currentDate = new ExchangeDate() { exDate = time };
-                SaveDateInDb(currentDate);
-                var rates = new WebApiData().GetCurrencyExchangeRate(currentDate.exDate);
-                var datasAboutCurrencies = GetCurrencyDatas();
-                if (datasAboutCurrencies == null)
-                {
-                    SaveCurrencyData(rates.Select(rate => new CurrencyData()
-                    {
-                        cc = rate.ShortName,
-                        r030 = rate.Indetifier,
-                        txt = rate.FullName
-                    }));
-                }
-
-                SaveCurrencyRates(rates.Select(rate => new CurrencyRate()
-                {
-                    Rate = rate.Rate,
-                    CurId = datasAboutCurrencies.Where(data => data.r030 == rate.Indetifier).Select(data => data.ID).Single(),
-                    DateId = currentDate.ID
-                }));
-                return rates;
+                return null;
             }
         }
 
 
-        private void SaveCurrencyData(IEnumerable<CurrencyData> datas)
+        private IEnumerable<CurrencyData> SaveCurrencyData(IEnumerable<CurrencyData> datas)
         {
             foreach (var data in datas)
                 Session.Save(data);
+            return datas;
         }
 
         private ExchangeRate ConvertToExchangeRate(CurrencyRate rate, DateTime date, CurrencyData data)
@@ -110,6 +89,25 @@ namespace CurrencyExchageRate.DBControllers
                 Session.Save(rate);
         }
 
+        public void SaveRates(List<ExchangeRate> rates)
+        {
+            var currentDate = new ExchangeDate() { exDate = DateTime.Parse(rates.First().ExchangeDate) };
+            SaveDateInDb(currentDate);
+            var dataOfRates = GetCurrencyDatas();
+            if (dataOfRates == null || dataOfRates.Count <= 0)
+                dataOfRates = SaveCurrencyData(rates.Select(rate => new CurrencyData()
+                {
+                    cc = rate.ShortName,
+                    r030 = rate.Indetifier,
+                    txt = rate.FullName
+                })).ToList();
 
+            SaveCurrencyRates(rates.Select(rate => new CurrencyRate()
+            {
+                Rate = rate.Rate,
+                CurId = dataOfRates.Where(data => data.r030 == rate.Indetifier).Select(data => data.ID).FirstOrDefault(),
+                DateId = currentDate.ID
+            }));
+        }
     }
 }
