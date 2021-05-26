@@ -35,7 +35,7 @@ namespace CurrencyExchageRate
             services.AddTransient<IDbProvider>(provider =>
             {
                 var connectionString = Configuration.GetConnectionString("dbConnectionString");
-                return new DataDB(connectionString);
+                return new DbDataProvider(connectionString);
             });
 
             services.AddControllersWithViews();
