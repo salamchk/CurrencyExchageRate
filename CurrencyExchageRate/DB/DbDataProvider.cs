@@ -5,20 +5,16 @@ using DataLayer.Entities.Nhibernate;
 using NHibernate;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CurrencyExchageRate.DB
 {
-    public class DataDB : IDbProvider
+    public class DbDataProvider : IDbProvider
     {
         public ISession Session { get; private set; }
-        public DataDB(string connectionString)
+        public DbDataProvider(string connectionString)
         {
             Session = NHibernateHelper.OpenSession(connectionString);
-
         }
 
         public List<ExchangeRate> GetCurrencyExchangeRate()
@@ -42,7 +38,6 @@ namespace CurrencyExchageRate.DB
                 return null;
             }
         }
-
 
         private IEnumerable<CurrencyData> SaveCurrencyData(IEnumerable<CurrencyData> datas)
         {
@@ -74,14 +69,10 @@ namespace CurrencyExchageRate.DB
             Session.Save(currentDate);
         }
 
-
         private ExchangeDate GetExchangeDate(DateTime time)
             => (from exDate in Session.Query<ExchangeDate>()
                 where exDate.exDate == time
                 select exDate).FirstOrDefault();
-
-
-
 
         private void SaveCurrencyRates(IEnumerable<CurrencyRate> rates)
         {
