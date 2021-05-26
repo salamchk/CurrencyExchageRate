@@ -27,32 +27,21 @@ namespace CurrencyExchageRate.Controllers
 
 
         private readonly ILogger<HomeController> _logger;
-        private readonly IConfiguration _configuration;
-        //private readonly string _connectionString;
-       // private readonly string _url;
-        //private IDbProvider _dbProvider;
-        //private IApiProvider _apiProvider;
+        private IDbProvider _dbProvider;
+        private IApiProvider _apiProvider;
 
-       // public HomeController(ILogger<HomeController> logger, IConfiguration config, IDataProvider data, IApiProvider api)
-        public HomeController(ILogger<HomeController> logger, IConfiguration config)
+        public HomeController(ILogger<HomeController> logger, IDbProvider data, IApiProvider api)
         {
             _logger = logger;
-            _configuration = config;
-            //_connectionString = _configuration.GetConnectionString("dbConnectionString");
-            //_url = _configuration.GetSection("ApiUrl").Value;
-            //_dbProvider = new DataDB(_connectionString);
-            //_apiProvider = new WebApiData(_url);
+            _dbProvider = data;
+            _apiProvider = api;
         }
-        /// <summary>
-        /// For Change ur on Exchange2:
-        /// [HttpGet("Exchange2")]
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet("")]
         public ActionResult ExchangeRate()
         {
             try
-            { 
+            {
                 return View();
             }
             catch (Exception e)
@@ -67,20 +56,22 @@ namespace CurrencyExchageRate.Controllers
         public List<ExchangeRate> ExchangeRate(DateTime date)
         {
             try
-                {
+            {
                 List<ExchangeRate> rates;
-                var dbProvider = new DataDB(Constants.dbConnectionString);
-                rates = dbProvider.GetCurrencyExchangeRate(date);
-                if(rates!=null && rates.Count>0 )
+                rates = _dbProvider.GetCurrencyExchangeRate(date);
+                if (rates != null && rates.Count > 0)
                 {
                     return rates;
                 }
                 else
                 {
-                    var apiProvider = new WebApiData(Constants.ApiUrl);
-                    rates = apiProvider.GetCurrencyExchangeRate(date);
-                    dbProvider.SaveRates(rates);
-                    return rates;
+                    rates = _apiProvider.GetCurrencyExchangeRate(date);
+                    if (rates != null && rates.Count > 0)
+                    {
+                        _dbProvider.SaveRates(rates);
+                        return rates;
+                    }
+                    return null;
                 }
             }
             catch (Exception e)
