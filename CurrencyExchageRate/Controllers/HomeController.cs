@@ -1,31 +1,16 @@
-﻿
-using CurrencyExchageRate.DB;
-using CurrencyExchageRate.Interfaces;
+﻿using CurrencyExchageRate.Interfaces;
 using CurrencyExchageRate.Models;
-using DataLayer.Entities;
-using DataLayer.Entities.Nhibernate;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using NHibernate.Cfg;
-using NHibernate.Dialect;
-using NHibernate.Driver;
-using NHibernate.Transform;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Reflection;
 
 namespace CurrencyExchageRate.Controllers
 {
 
     public class HomeController : Controller
     {
-
-
         private readonly ILogger<HomeController> _logger;
         private readonly IDbProvider _dbProvider;
         private readonly IApiProvider _apiProvider;
