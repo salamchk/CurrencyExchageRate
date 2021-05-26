@@ -28,20 +28,20 @@ namespace CurrencyExchageRate.Controllers
 
         private readonly ILogger<HomeController> _logger;
         private readonly IConfiguration _configuration;
-        private readonly string _connectionString;
-        private readonly string _url;
-        private IDbProvider _dbProvider;
-        private IApiProvider _apiProvider;
+        //private readonly string _connectionString;
+       // private readonly string _url;
+        //private IDbProvider _dbProvider;
+        //private IApiProvider _apiProvider;
 
-
-        public HomeController(ILogger<HomeController> logger, IConfiguration config, IDbProvider dbProvider, IApiProvider apiProvider)
+       // public HomeController(ILogger<HomeController> logger, IConfiguration config, IDataProvider data, IApiProvider api)
+        public HomeController(ILogger<HomeController> logger, IConfiguration config)
         {
             _logger = logger;
-            _dbProvider = dbProvider;
-            _apiProvider = apiProvider;
             _configuration = config;
-            _connectionString = _configuration.GetConnectionString("dbConnectionString");
-            _url = _configuration.GetSection("ApiUrl").Value;
+            //_connectionString = _configuration.GetConnectionString("dbConnectionString");
+            //_url = _configuration.GetSection("ApiUrl").Value;
+            //_dbProvider = new DataDB(_connectionString);
+            //_apiProvider = new WebApiData(_url);
         }
         /// <summary>
         /// For Change ur on Exchange2:
@@ -69,15 +69,17 @@ namespace CurrencyExchageRate.Controllers
             try
                 {
                 List<ExchangeRate> rates;
-                rates = _dbProvider.GetCurrencyExchangeRate(date);
+                var dbProvider = new DataDB(Constants.dbConnectionString);
+                rates = dbProvider.GetCurrencyExchangeRate(date);
                 if(rates!=null && rates.Count>0 )
                 {
                     return rates;
                 }
                 else
                 {
-                    rates = _apiProvider.GetCurrencyExchangeRate(date);
-                    _dbProvider.SaveRates(rates);
+                    var apiProvider = new WebApiData(Constants.ApiUrl);
+                    rates = apiProvider.GetCurrencyExchangeRate(date);
+                    dbProvider.SaveRates(rates);
                     return rates;
                 }
             }

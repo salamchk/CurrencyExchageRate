@@ -26,9 +26,8 @@ namespace CurrencyExchageRate
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddTransient<IDbProvider, DataDB>();
-            services.AddTransient<IApiProvider, WebApiData>();
+            //services.AddTransient<IDbProvider, DataDB>();
+            //services.AddTransient<IApiProvider, WebApiData>();
             services.AddControllersWithViews();
             services.AddSwaggerGen((options)=>
             {

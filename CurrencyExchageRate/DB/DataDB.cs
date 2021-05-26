@@ -14,7 +14,7 @@ namespace CurrencyExchageRate.DB
 {
     public class DataDB : IDbProvider
     {
-        public ISession Session { get; }
+        public ISession Session { get; private set; }
         public DataDB(string connectionString)
         {
             Session = NHibernateHelper.OpenSession(connectionString);
