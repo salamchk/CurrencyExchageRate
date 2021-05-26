@@ -6,23 +6,22 @@ text.innerHTML = select.value;
 GetRates();
 
 function GetRates() {
-    select.innerHTML = '';
-    fetch(date.value, {
+    select.innerHTML = ''; fetch(DateToString(date.value), {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        }
-    }).then(response => response.json()).then(data => DataFromResponseToSelect(data));
+        headers: {'Content-Type': 'application/json;charset=utf-8'}}).then(response => response.json()).then(data => DataFromResponseToSelect(data));
 }
 
-function DataFromResponseToSelect(data) {
-    data.forEach(item => {
+function DataFromResponseToSelect(data) {data.forEach(item => {
         var currency = document.createElement('option');
         currency.value = item.rate;
         currency.innerHTML = item.fullName;
         select.appendChild(currency);
         text.innerHTML = select.value;
     })
+}
+
+function DateToString(date) {
+    return new Date(date).toISOString();
 }
 
 select.addEventListener('change', (event) => {
