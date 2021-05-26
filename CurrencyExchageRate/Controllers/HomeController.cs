@@ -27,14 +27,14 @@ namespace CurrencyExchageRate.Controllers
 
 
         private readonly ILogger<HomeController> _logger;
-        private IDbProvider _dbProvider;
-        private IApiProvider _apiProvider;
+        private readonly IDbProvider _dbProvider;
+        private readonly IApiProvider _apiProvider;
 
-        public HomeController(ILogger<HomeController> logger, IDbProvider data, IApiProvider api)
+        public HomeController(ILogger<HomeController> logger, IDbProvider dbProvider, IApiProvider apiProvider)
         {
             _logger = logger;
-            _dbProvider = data;
-            _apiProvider = api;
+            _dbProvider = dbProvider;
+            _apiProvider = apiProvider;
         }
 
         [HttpGet("")]
@@ -57,8 +57,7 @@ namespace CurrencyExchageRate.Controllers
         {
             try
             {
-                List<ExchangeRate> rates;
-                rates = _dbProvider.GetCurrencyExchangeRate(date);
+               var rates = _dbProvider.GetCurrencyExchangeRate(date);
                 if (rates != null && rates.Count > 0)
                 {
                     return rates;
