@@ -6,7 +6,6 @@
     <div style="text-align: center; vertical-align: middle;">
         <h1>Today : @DateTime.Now.ToString("dd.MM.yyyy")</h1>
     </div>
-    <form >
         <div>
             <input id="date-field" type="date" name="date" min="2012-06-04"
                    max=@DateTime.Now.ToString("yyyy-MM-dd") value="@DateTime.Now.ToString("yyyy-MM-dd")" />
@@ -14,12 +13,11 @@
         <div>
             <div>
                 1
-                <select id="currencyName" name="currency">
+                <select id="currency-name" name="currency">
                 </select> = <b id="text-field"></b> UAH
             </div>
         </div>
-    </form>
-</div>
 <script src="~/js/site.js"></script>
+</div>
 
 

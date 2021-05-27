@@ -1,28 +1,30 @@
-﻿const select = document.getElementById('currencyName');
-const date = document.getElementById('date-field');
-const text = document.getElementById('text-field');
+﻿var select = document.getElementById('currency-name');
+var date = document.getElementById('date-field');
+var text = document.getElementById('text-field');
 text.innerHTML = select.value;
 
 GetRates();
 
 function GetRates() {
-    select.innerHTML = ''; fetch(DateToString(date.value), {
+    select.innerHTML = '';
+    fetch(DateToString(date.value), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json;charset=utf-8' }
     }).then(response => response.json()).then(data => DataToSelect(data));
 }
 
-function DataToSelect(data) {data.forEach(item => {
+function DataToSelect(data) {
+    data.forEach(item => {
         var currency = document.createElement('option');
         currency.value = item.rate;
         currency.innerHTML = item.fullName;
         select.appendChild(currency);
         text.innerHTML = select.value;
-    })
+    });
 }
 
 function DateToString(date) {
-    return new Date(date).toISOString();
+    return new Date(date).toDateString();
 }
 
 select.addEventListener('change', (event) => {
