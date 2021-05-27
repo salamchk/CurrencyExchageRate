@@ -39,10 +39,12 @@ namespace CurrencyExchageRate.DB
             }
         }
 
-        private IEnumerable<CurrencyData> SaveCurrencyData(IEnumerable<CurrencyData> datas)
+        private List<CurrencyData> SaveCurrencyData(List<CurrencyData> datas)
         {
-            foreach (var data in datas)
-                Session.Save(data);
+            for (int i = 0; i < datas.Count(); i++)
+            {
+                Session.Save(datas[i]);
+            }
             return datas;
         }
 
@@ -85,14 +87,25 @@ namespace CurrencyExchageRate.DB
             var currentDate = new ExchangeDate() { exDate = DateTime.Parse(rates.First().ExchangeDate) };
             SaveDateInDb(currentDate);
             var dataOfRates = GetCurrencyDatas();
+
             if (dataOfRates == null || dataOfRates.Count <= 0)
                 dataOfRates = SaveCurrencyData(rates.Select(rate => new CurrencyData()
                 {
                     cc = rate.ShortName,
                     r030 = rate.Indetifier,
                     txt = rate.FullName
-                })).ToList();
-
+                }).ToList()).ToList();
+            var absentData = rates.Where(rate => !dataOfRates.Select(data => data.cc).Contains(rate.ShortName)).Select(rate => new CurrencyData()
+            {
+                cc = rate.ShortName,
+                r030 = rate.Indetifier,
+                txt = rate.FullName
+            });
+            if (absentData.Count() > 0)
+            {    
+                dataOfRates.AddRange(absentData);
+                SaveCurrencyData(dataOfRates);
+            }
             SaveCurrencyRates(rates.Select(rate => new CurrencyRate()
             {
                 Rate = rate.Rate,
