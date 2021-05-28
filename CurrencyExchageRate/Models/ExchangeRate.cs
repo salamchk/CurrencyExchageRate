@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using DataLayer.Entities;
+using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace CurrencyExchageRate.Models
 {
