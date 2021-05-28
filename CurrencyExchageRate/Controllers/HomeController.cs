@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace CurrencyExchageRate.Controllers
 {
@@ -14,6 +15,8 @@ namespace CurrencyExchageRate.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IDbProvider _dbProvider;
         private readonly IApiProvider _apiProvider;
+
+        public static List<ExchangeRate> Rates { get; set; }
 
         public HomeController(ILogger<HomeController> logger, IDbProvider dbProvider, IApiProvider apiProvider)
         {
@@ -40,11 +43,17 @@ namespace CurrencyExchageRate.Controllers
         [HttpPost("{date}")]
         public List<ExchangeRate> ExchangeRate(DateTime date)
         {
+            if(date.Date == DateTime.Today)
+            {
+                if (Rates != null && Rates.First().ExchangeDate == date.ToShortDateString()) return Rates;
+            }
             try
             {
                var rates = _dbProvider.GetCurrencyExchangeRate(date);
                 if (rates != null && rates.Count > 0)
                 {
+                    if (rates.First().ExchangeDate == DateTime.Today.ToShortDateString())
+                        Rates = rates;
                     return rates;
                 }
                 else
@@ -53,6 +62,8 @@ namespace CurrencyExchageRate.Controllers
                     if (rates != null && rates.Count > 0)
                     {
                         _dbProvider.SaveRates(rates);
+                        if (rates.First().ExchangeDate == DateTime.Today.ToShortDateString())
+                            Rates = rates;
                         return rates;
                     }
                     return null;
