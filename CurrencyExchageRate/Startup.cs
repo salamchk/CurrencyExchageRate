@@ -1,11 +1,15 @@
 using CurrencyExchageRate.DB;
 using CurrencyExchageRate.Interfaces;
 using CurrencyExchageRate.Models;
+using LocalDbChecker;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Quartz;
+using System;
+using WebApplication2;
 
 namespace CurrencyExchageRate
 {
@@ -21,6 +25,7 @@ namespace CurrencyExchageRate
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            DbScheduler.Start(Configuration.GetConnectionString("dbConnectionString"), Configuration.GetSection("ApiUrl").Value);
             services.AddTransient<IApiProvider>(provider =>
             {
                 var url = Configuration.GetSection("ApiUrl").Value;
