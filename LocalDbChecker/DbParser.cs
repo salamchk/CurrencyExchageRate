@@ -18,9 +18,11 @@ namespace WebApplication2
         {
             Console.WriteLine("In DBParser");
             var dataMap = context.JobDetail.JobDataMap;
+            //Get data from context
             var connectionString = dataMap.GetString("connnectionString");
             var uri = dataMap.GetString("uri");
             var date = dataMap.GetDateTime("date");
+            //Create providers for updating database
             var dbProvider = new DbDataProvider(connectionString);
             var apiProvider = new WebApiData(uri);
 
