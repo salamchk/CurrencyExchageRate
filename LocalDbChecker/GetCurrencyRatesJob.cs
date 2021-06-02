@@ -32,7 +32,7 @@ namespace WebApplication2
             var semaphore = new Semaphore(30, 30);
             for (DateTime currentDate = date.AddDays(-30); currentDate < date; currentDate = currentDate.AddDays(1))
             {
-                _tasks.Add(new Task(() => Save(currentDate)));
+                _tasks.Add(Task.Run(() => Save(currentDate)));
             }
             Task.WaitAll(_tasks.ToArray());
             _tasks.Clear();
