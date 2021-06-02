@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CurrencyRateLibrary\CurrencyRateLibrary.csproj" />
     <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
     <ProjectReference Include="..\LocalDbChecker\LocalDbChecker.csproj" />
   </ItemGroup>

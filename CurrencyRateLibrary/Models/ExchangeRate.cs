@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace CurrencyExchageRate.Models
+namespace CurrencyRateLibrary.Models
 {
     public class ExchangeRate
     {

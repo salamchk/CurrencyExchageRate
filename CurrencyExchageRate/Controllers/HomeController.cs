@@ -1,5 +1,6 @@
-﻿using CurrencyExchageRate.Interfaces;
-using CurrencyExchageRate.Models;
+﻿using CurrencyExchageRate.Models;
+using CurrencyRateLibrary.Interfaces;
+using CurrencyRateLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;

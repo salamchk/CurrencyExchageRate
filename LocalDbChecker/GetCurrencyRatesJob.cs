@@ -1,18 +1,12 @@
-﻿using LocalDbChecker.DB;
-using LocalDbChecker.Models;
+﻿using CurrencyRateLibrary.DB;
+using CurrencyRateLibrary.WebClientBank;
 using Quartz;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace WebApplication2
 {
-    public class DbParser : IJob
+    public class GetCurrencyRatesJob : IJob
     {
         public async Task Execute(IJobExecutionContext context)
         {
@@ -23,6 +17,11 @@ namespace WebApplication2
             var uri = dataMap.GetString("uri");
             var date = dataMap.GetDateTime("date");
             //Create providers for updating database
+            GetRates(connectionString, uri, date);
+        }
+
+        private static void GetRates(string connectionString, string uri, DateTime date)
+        {
             var dbProvider = new DbDataProvider(connectionString);
             var apiProvider = new WebApiData(uri);
 
@@ -33,7 +32,7 @@ namespace WebApplication2
             else
             {
                 //Get rates from Api
-                rates = await apiProvider.GetCurrencyExchangeRate(date);
+                rates = apiProvider.GetCurrencyExchangeRate(date);
                 if (rates != null && rates.Count > 0)
                 {
                     //Save rates in database

@@ -1,8 +1,8 @@
-﻿using CurrencyExchageRate.Models;
+﻿using CurrencyRateLibrary.Models;
 using NHibernate;
 using System.Collections.Generic;
 
-namespace CurrencyExchageRate.Interfaces
+namespace CurrencyRateLibrary.Interfaces
 {
     public interface IDbProvider : IDataProvider
     {

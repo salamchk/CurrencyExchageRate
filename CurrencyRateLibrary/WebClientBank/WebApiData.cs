@@ -1,29 +1,27 @@
-﻿using LocalDbChecker.Interfaces;
-using LocalDbChecker.Models;
+﻿using CurrencyRateLibrary.Interfaces;
+using CurrencyRateLibrary.Models;
 using Newtonsoft.Json;
-using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Threading.Tasks;
 
-namespace LocalDbChecker.Models
+namespace CurrencyRateLibrary.WebClientBank
 {
-    public class WebApiData
+    public class WebApiData : IApiProvider
     {
         private readonly string _mainPartOfUri;
-        private const string jsonPart = "&json";
-        private const string dateFormat = "yyyyMMdd";
+        private const string _jsonPart = "&json";
+        private const string _dateFormat = "yyyyMMdd";
         public WebApiData(string partOfUr)
         {
             _mainPartOfUri = partOfUr;
         }
 
-        public async Task<List<ExchangeRate>> GetCurrencyExchangeRate(DateTime time)
+        public List<ExchangeRate> GetCurrencyExchangeRate(DateTime time)
         {
-            var datePartOfUr = time.ToString(dateFormat);
-            var uri = _mainPartOfUri + datePartOfUr + jsonPart;
+            var datePartOfUr = time.ToString(_dateFormat);
+            var uri = _mainPartOfUri + datePartOfUr + _jsonPart;
 
             var request = WebRequest.Create(uri);
             request.Method = WebRequestMethods.Http.Get;
@@ -32,15 +30,15 @@ namespace LocalDbChecker.Models
             {
                 using Stream data = response.GetResponseStream();
                 StreamReader streamReader = new StreamReader(data);
-                 webResponce = await streamReader.ReadToEndAsync();
+                webResponce = streamReader.ReadToEnd();
             }
             var listOfCurrencies = JsonConvert.DeserializeObject<List<ExchangeRate>>(webResponce);
             return listOfCurrencies;
         }
 
-        public async Task<List<ExchangeRate>>GetCurrencyExchangeRate()
+        public List<ExchangeRate> GetCurrencyExchangeRate()
         {
-            return await GetCurrencyExchangeRate(DateTime.Today);
+            return GetCurrencyExchangeRate(DateTime.Today);
         }
     }
 }

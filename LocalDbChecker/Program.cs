@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Configuration;
+using WebApplication2;
 
 namespace LocalDbChecker
 {
@@ -15,10 +16,10 @@ namespace LocalDbChecker
         {
             Console.WriteLine("Started");
             var connectionString = ConfigurationManager.ConnectionStrings["localDbString"].ConnectionString;
-
+            var uri = ConfigurationManager.AppSettings["ApiUrl"];
             try
             {
-                    //DbScheduler.Start();
+                    DbScheduler.Start(connectionString, uri);
                 }
                 catch (Exception)
                 {

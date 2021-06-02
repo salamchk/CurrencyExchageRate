@@ -1,13 +1,11 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CurrencyExchageRate.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Moq;
-using CurrencyExchageRate.Interfaces;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Mvc;
+using CurrencyRateLibrary.Interfaces;
+using CurrencyRateLibrary.Models;
 
 namespace CurrencyExchageRate.Controllers.Tests
 {
@@ -22,10 +20,10 @@ namespace CurrencyExchageRate.Controllers.Tests
             var apiProviderMock = new Mock<IApiProvider>();
             var mock = new Mock<ILogger<HomeController>>();
 
-            var FakesData = new List<Models.ExchangeRate>{
-                new Models.ExchangeRate(),
-                new Models.ExchangeRate(),
-                new Models.ExchangeRate()
+            var FakesData = new List<ExchangeRate>{
+                new ExchangeRate(),
+                new ExchangeRate(),
+                new ExchangeRate()
             };
             ILogger<HomeController> logger = mock.Object;
             var controller = new HomeController(logger, dbProviderMock.Object, apiProviderMock.Object);
@@ -52,9 +50,9 @@ namespace CurrencyExchageRate.Controllers.Tests
             var controller = new HomeController(logger, dbProviderMock.Object, apiProviderMock.Object);
 
             dbProviderMock.Setup(obj => obj.GetCurrencyExchangeRate(
-              Moq.It.IsAny<DateTime>())).Returns(new List<Models.ExchangeRate>());
+              Moq.It.IsAny<DateTime>())).Returns(new List<ExchangeRate>());
             apiProviderMock.Setup(obj => obj.GetCurrencyExchangeRate(
-                Moq.It.IsAny<DateTime>())).Returns(new List<Models.ExchangeRate>());
+                Moq.It.IsAny<DateTime>())).Returns(new List<ExchangeRate>());
 
 
             //act

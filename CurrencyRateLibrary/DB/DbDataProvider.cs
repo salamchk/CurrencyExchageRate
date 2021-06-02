@@ -1,14 +1,13 @@
-﻿using LocalDbChecker.Interfaces;
-using LocalDbChecker.Models;
+﻿using CurrencyRateLibrary.Interfaces;
+using CurrencyRateLibrary.Models;
 using DataLayer.Entities;
 using DataLayer.Entities.Nhibernate;
 using NHibernate;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 
-namespace LocalDbChecker.DB
+namespace CurrencyRateLibrary.DB
 {
     public class DbDataProvider : IDbProvider
     {

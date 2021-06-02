@@ -1,8 +1,8 @@
-﻿using LocalDbChecker.Models;
+﻿using CurrencyRateLibrary.Models;
 using System;
 using System.Collections.Generic;
 
-namespace LocalDbChecker.Interfaces
+namespace CurrencyRateLibrary.Interfaces
 {
     public interface IDataProvider
     {

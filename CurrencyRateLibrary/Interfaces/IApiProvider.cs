@@ -1,4 +1,4 @@
-﻿namespace CurrencyExchageRate.Interfaces
+﻿namespace CurrencyRateLibrary.Interfaces
 {
     public interface IApiProvider:IDataProvider
     {

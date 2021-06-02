@@ -1,7 +1,6 @@
-using CurrencyExchageRate.DB;
-using CurrencyExchageRate.Interfaces;
-using CurrencyExchageRate.Models;
-using LocalDbChecker;
+using CurrencyRateLibrary.DB;
+using CurrencyRateLibrary.Interfaces;
+using CurrencyRateLibrary.WebClientBank;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
