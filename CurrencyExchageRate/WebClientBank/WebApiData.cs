@@ -1,12 +1,13 @@
-﻿using CurrencyExchageRate.Interfaces;
+﻿
+using CurrencyExchageRate.Interfaces;
+using CurrencyExchageRate.Models;
 using Newtonsoft.Json;
-using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 
-namespace CurrencyExchageRate.Models
+namespace CurrencyExchageRate.WebClientBank
 {
     public class WebApiData : IApiProvider
     {
