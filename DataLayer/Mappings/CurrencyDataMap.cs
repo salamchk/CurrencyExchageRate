@@ -16,7 +16,6 @@ namespace DataLayer.Mappings
             Map(x => x.cc);
             Map(x => x.r030);
             Map(x => x.txt);
-            HasMany(x => x.CurrencyRates).Inverse();
         }
     }
 }

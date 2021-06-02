@@ -15,7 +15,6 @@ namespace DataLayer.Entities
         public virtual float Rate { get; set; }
         public virtual int DateId { get; set; }
 
-        public virtual ExchangeDate ExchangeDate { get; set; }
-        public virtual CurrencyData CurrencyData{ get; set; }
+
     }
 }
