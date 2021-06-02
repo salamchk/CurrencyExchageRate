@@ -14,7 +14,6 @@ namespace DataLayer.Mappings
         {
             Id(x => x.ID);
             Map(x => x.exDate);
-            HasMany(x => x.CurrencyRates).Inverse();
         } 
     }
 }

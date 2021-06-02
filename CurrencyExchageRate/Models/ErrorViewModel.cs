@@ -1,5 +1,3 @@
-using System;
-
 namespace CurrencyExchageRate.Models
 {
     public class ErrorViewModel

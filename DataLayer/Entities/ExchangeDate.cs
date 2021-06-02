@@ -10,6 +10,6 @@ namespace DataLayer.Entities
     {
         public virtual int ID { get; set; }
         public virtual DateTime exDate { get; set; }
-        public virtual ICollection<CurrencyRate> CurrencyRates { get; set; }
+
     }
 }

@@ -1,26 +1,31 @@
-﻿@model List<CurrencyExchangeRate>
+﻿@using System.Linq
 @{
     ViewData["Title"] = "Home Page";
 }
-<div>
+
+
+<div class="container-xxl row text-center custom-class">
     <div style="text-align: center; vertical-align: middle;">
         <h1>Today : @DateTime.Now.ToString("dd.MM.yyyy")</h1>
     </div>
-    <form method="post">
         <div>
-            <input type="date" name="date" min="2012-06-04"
+            <input class="form-control-lg custom-date" id="date-field" type="date" name="date" min="2012-06-04"
                    max=@DateTime.Now.ToString("yyyy-MM-dd") value="@DateTime.Now.ToString("yyyy-MM-dd")" />
-            <select id="currencyName" name="currency">
-                @foreach (var item in Model)
-                {
-                    <option value="@item.cc">@item.txt</option>
-                }
-            </select>
-
-            <input type="submit" value="Send" name="CurrencyName" />
-
         </div>
-    </form>
-
+    <hr/>
+        <div class="border-class custom-currency">
+            <div class="row align-items-center">
+                <div class="col">
+                    <select class="form-control-lg select-style" id="currency-name" name="currency">
+                    </select>
+                </div>
+                <div class="col">
+                <p  id="text-field"></p>
+                </div>
+            </div>
+        </div>
+        <hr />
 </div>
+
+
 

@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyExchageRate", "CurrencyExchageRate\CurrencyExchageRate.csproj", "{75A57A76-6959-4073-8B64-3B115D2772B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{959FECB1-DD3A-437C-8473-DDFD2EDC99A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataLayer", "DataLayer\DataLayer.csproj", "{959FECB1-DD3A-437C-8473-DDFD2EDC99A0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyExchageRateTests", "CurrencyExchageRateTests\CurrencyExchageRateTests.csproj", "{B4BD0787-8788-4799-9780-E920A0677DB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalDbChecker", "LocalDbChecker\LocalDbChecker.csproj", "{B392B7ED-7FD6-4763-80D0-B2A3CA042916}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{959FECB1-DD3A-437C-8473-DDFD2EDC99A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{959FECB1-DD3A-437C-8473-DDFD2EDC99A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{959FECB1-DD3A-437C-8473-DDFD2EDC99A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4BD0787-8788-4799-9780-E920A0677DB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4BD0787-8788-4799-9780-E920A0677DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4BD0787-8788-4799-9780-E920A0677DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4BD0787-8788-4799-9780-E920A0677DB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B392B7ED-7FD6-4763-80D0-B2A3CA042916}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B392B7ED-7FD6-4763-80D0-B2A3CA042916}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B392B7ED-7FD6-4763-80D0-B2A3CA042916}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B392B7ED-7FD6-4763-80D0-B2A3CA042916}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
