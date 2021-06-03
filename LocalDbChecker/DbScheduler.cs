@@ -1,9 +1,8 @@
 ﻿using Quartz;
 using Quartz.Impl;
 using System;
-using System.Threading;
 
-namespace WebApplication2
+namespace LocalDbChecker
 {
     public class DbScheduler
     {
@@ -20,8 +19,7 @@ namespace WebApplication2
 
             ITrigger trigger = TriggerBuilder.Create()
           .WithIdentity("trigger", "group1")
-          .StartNow().WithDailyTimeIntervalSchedule(x => x
-          .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(0, 0)))
+          .StartNow()
           .Build();
             await scheduler.ScheduleJob(job, trigger);
         }

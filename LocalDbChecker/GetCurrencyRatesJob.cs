@@ -1,20 +1,20 @@
 ﻿using CurrencyRateLibrary.DB;
+using CurrencyRateLibrary.Interfaces;
 using CurrencyRateLibrary.WebClientBank;
 using Quartz;
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace WebApplication2
+namespace LocalDbChecker
 {
     public class GetCurrencyRatesJob : IJob
     {
         private static string _connectionString;
         private static string _uri;
 
-        private static List<Task> _tasks = new List<Task>();
-
+        //private static List<Task> _tasks = new List<Task>();
+        private static object _locker = new object();
         public async Task Execute(IJobExecutionContext context)
         {
             Console.WriteLine("In DBParser");
@@ -24,40 +24,41 @@ namespace WebApplication2
             _uri = dataMap.GetString("uri");
             var date = dataMap.GetDateTime("date");
             //Create providers for updating database
-            GetRates(date);
+            GetRates(date, new WebApiData(_uri), new DbDataProvider(_connectionString));
         }
 
-        private static void GetRates(DateTime date)
+        public static void GetRates(DateTime date, IApiProvider fromApiProvider, IDbProvider toDbProvider)
         {
-            var semaphore = new Semaphore(30, 30);
+
             for (DateTime currentDate = date.AddDays(-30); currentDate < date; currentDate = currentDate.AddDays(1))
             {
-                _tasks.Add(Task.Run(() => Save(currentDate)));
-            }
-            Task.WaitAll(_tasks.ToArray());
-            _tasks.Clear();
+                var work = new Action(() => Save(currentDate, fromApiProvider, toDbProvider));
+                var task = new Task((Action)work.Clone());
+                task.Start();
+                task.Wait();
+            
+             }
+            //Task.WaitAll(_tasks.ToArray());
+
         }
 
 
-        private static void Save(object currentDate)
+        public static void Save(DateTime currentDate, IApiProvider fromApiProvider, IDbProvider toDbProvider)
         {
-            var dbProvider = new DbDataProvider(_connectionString);
-            var apiProvider = new WebApiData(_uri);
-            var date = (DateTime)currentDate;
-            var rates = dbProvider.GetCurrencyExchangeRate(date);
-            if (rates != null && rates.Count > 0)
+            lock (_locker)
             {
-            }
-            else
-            {
-                //Get rates from Api
-                rates = apiProvider.GetCurrencyExchangeRate(date);
+                var date = currentDate;
+                var rates = toDbProvider.GetCurrencyExchangeRate(date);
+                if (rates == null || rates.Count <= 0)
+                    //Get rates from Api
+                    rates = fromApiProvider.GetCurrencyExchangeRate(date);
                 if (rates != null && rates.Count > 0)
                 {
                     //Save rates in database
-                    dbProvider.SaveRates(rates);
+                    toDbProvider.SaveRates(rates);
                 }
             }
         }
     }
 }
+

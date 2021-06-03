@@ -1,14 +1,12 @@
 using CurrencyRateLibrary.DB;
 using CurrencyRateLibrary.Interfaces;
 using CurrencyRateLibrary.WebClientBank;
+using LocalDbChecker;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Quartz;
-using System;
-using WebApplication2;
 
 namespace CurrencyExchageRate
 {
