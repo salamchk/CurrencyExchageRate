@@ -23,8 +23,16 @@ namespace LocalDbChecker.Tests
             apiProviderMock.Setup(obj => obj.GetCurrencyExchangeRate(
                 Moq.It.IsAny<DateTime>())).Returns(new List<ExchangeRate>());
 
-            GetCurrencyRatesJob.Save(DateTime.Today, apiProviderMock.Object, dbProviderMock.Object);
+            GetCurrencyRatesJob.GetRates(DateTime.Today, apiProviderMock.Object, dbProviderMock.Object);
 
+        }
+
+        [TestMethod()]
+        public void SaveTest2()
+        {
+            var dbProviderMock = new Mock<IDbProvider>();
+            var apiProviderMock = new Mock<IApiProvider>();
+            GetCurrencyRatesJob.GetRates(DateTime.Today, apiProviderMock.Object, dbProviderMock.Object);
         }
     }
 }

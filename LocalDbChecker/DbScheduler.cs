@@ -18,9 +18,15 @@ namespace LocalDbChecker
                .UsingJobData("date", DateTime.Today.ToShortDateString()).Build();
 
             ITrigger trigger = TriggerBuilder.Create()
-          .WithIdentity("trigger", "group1")
+          .WithIdentity("Starttrigger", "group1")
           .StartNow()
           .Build();
+
+            ITrigger dailyTrigger = TriggerBuilder.Create()
+         .WithIdentity("dailyTrigger", "group1")
+         .StartNow().WithDailyTimeIntervalSchedule(x=>
+         x.StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(0,0)))
+         .Build();
             await scheduler.ScheduleJob(job, trigger);
         }
     }
