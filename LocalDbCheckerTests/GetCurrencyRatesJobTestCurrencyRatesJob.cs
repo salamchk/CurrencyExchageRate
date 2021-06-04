@@ -15,6 +15,7 @@ namespace LocalDbChecker.Tests
         [TestMethod()]
         public void SaveTest()
         {
+            //arrange
             var dbProviderMock = new Mock<IDbProvider>();
             var apiProviderMock = new Mock<IApiProvider>();
             
@@ -22,17 +23,23 @@ namespace LocalDbChecker.Tests
               Moq.It.IsAny<DateTime>())).Returns(new List<ExchangeRate>());
             apiProviderMock.Setup(obj => obj.GetCurrencyExchangeRate(
                 Moq.It.IsAny<DateTime>())).Returns(new List<ExchangeRate>());
-
-            GetCurrencyRatesJob.GetRates(DateTime.Today, apiProviderMock.Object, dbProviderMock.Object);
-
+            //act
+            var rate = new Rate(apiProviderMock.Object, dbProviderMock.Object);
+            rate.GetRates(DateTime.Today, 30);
+            //assert
         }
 
         [TestMethod()]
         public void SaveTest2()
         {
+            //arrange
             var dbProviderMock = new Mock<IDbProvider>();
             var apiProviderMock = new Mock<IApiProvider>();
-            GetCurrencyRatesJob.GetRates(DateTime.Today, apiProviderMock.Object, dbProviderMock.Object);
+            //act
+            var rate = new Rate(apiProviderMock.Object, dbProviderMock.Object);
+            rate.GetRates(DateTime.Today, 30);
+
+            //assert
         }
     }
 }

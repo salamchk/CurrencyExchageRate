@@ -13,7 +13,7 @@ namespace CurrencyRateLibrary.DB
     {
         public ISession Session { get; private set; }
 
-        private object _locker = new object();
+        private readonly object _locker = new object();
         public DbDataProvider(string connectionString)
         {
             Session = NHibernateHelper.OpenSession(connectionString);
@@ -95,49 +95,47 @@ namespace CurrencyRateLibrary.DB
                         System.Globalization.CultureInfo.CurrentCulture,
                             System.Globalization.DateTimeStyles.None, out DateTime date))
                     {
-                        using (var transaction = Session.BeginTransaction())
+                        using var transaction = Session.BeginTransaction();
+                        try
                         {
-                            try
-                            {
-                                var currentDate = new ExchangeDate() { exDate = date };
-                                SaveDateInDb(currentDate);
-                                var dataOfRates = GetCurrencyDatas();
+                            var currentDate = new ExchangeDate() { exDate = date };
+                            SaveDateInDb(currentDate);
+                            var dataOfRates = GetCurrencyDatas();
 
-                                if (dataOfRates == null || dataOfRates.Count <= 0)
-                                    dataOfRates = SaveCurrencyData(rates.Select(rate => new CurrencyData()
-                                    {
-                                        cc = rate.ShortName,
-                                        r030 = rate.Indetifier,
-                                        txt = rate.FullName
-                                    }).ToList()).ToList();
-
-                                var absentData = rates.Where(rate => !dataOfRates.Select(data => data.cc).Contains(rate.ShortName)).Select(rate => new CurrencyData()
+                            if (dataOfRates == null || dataOfRates.Count <= 0)
+                                dataOfRates = SaveCurrencyData(rates.Select(rate => new CurrencyData()
                                 {
                                     cc = rate.ShortName,
                                     r030 = rate.Indetifier,
                                     txt = rate.FullName
-                                });
+                                }).ToList()).ToList();
 
-                                if (absentData.Count() > 0)
-                                {
-                                    dataOfRates.AddRange(absentData);
-                                    SaveCurrencyData(dataOfRates);
-                                }
-
-                                SaveCurrencyRates(rates.Select(rate => new CurrencyRate()
-                                {
-                                    Rate = rate.Rate,
-                                    CurId = dataOfRates.Where(data => data.r030 == rate.Indetifier).Select(data => data.ID).FirstOrDefault(),
-                                    DateId = currentDate.ID
-                                }));
-
-                                transaction.Commit();
-                            }
-                            catch (Exception ex)
+                            var absentData = rates.Where(rate => !dataOfRates.Select(data => data.cc).Contains(rate.ShortName)).Select(rate => new CurrencyData()
                             {
-                                Console.WriteLine(ex.Message);
-                                transaction.Rollback();
+                                cc = rate.ShortName,
+                                r030 = rate.Indetifier,
+                                txt = rate.FullName
+                            });
+
+                            if (absentData.Count() > 0)
+                            {
+                                dataOfRates.AddRange(absentData);
+                                SaveCurrencyData(dataOfRates);
                             }
+
+                            SaveCurrencyRates(rates.Select(rate => new CurrencyRate()
+                            {
+                                Rate = rate.Rate,
+                                CurId = dataOfRates.Where(data => data.r030 == rate.Indetifier).Select(data => data.ID).FirstOrDefault(),
+                                DateId = currentDate.ID
+                            }));
+
+                            transaction.Commit();
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex.Message);
+                            transaction.Rollback();
                         }
                     }
                     else throw new Exception("Can't parse time");

@@ -26,7 +26,7 @@ namespace CurrencyExchageRate
             services.AddTransient<IApiProvider>(provider =>
             {
                 var url = Configuration.GetSection("ApiUrl").Value;
-                return new WebApiData(url);
+                return new WebApiDataProvider(url);
             });
 
             services.AddTransient<IDbProvider>(provider =>

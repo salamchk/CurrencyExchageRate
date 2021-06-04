@@ -8,12 +8,12 @@ using System.Net;
 
 namespace CurrencyRateLibrary.WebClientBank
 {
-    public class WebApiData : IApiProvider
+    public class WebApiDataProvider : IApiProvider
     {
         private readonly string _mainPartOfUri;
         private const string _jsonPart = "&json";
         private const string _dateFormat = "yyyyMMdd";
-        public WebApiData(string partOfUr)
+        public WebApiDataProvider(string partOfUr)
         {
             _mainPartOfUri = partOfUr;
         }
