@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LocalDbChecker", "LocalDbCh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrencyRateLibrary", "CurrencyRateLibrary\CurrencyRateLibrary.csproj", "{7AC05513-F057-4EF4-BB77-669500B4EB58}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocalDbCheckerTests1", "LocalDbCheckerTests1\LocalDbCheckerTests1.csproj", "{F99D8D2F-1B7D-4E56-ADB8-E782A19695CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{7AC05513-F057-4EF4-BB77-669500B4EB58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7AC05513-F057-4EF4-BB77-669500B4EB58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7AC05513-F057-4EF4-BB77-669500B4EB58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F99D8D2F-1B7D-4E56-ADB8-E782A19695CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F99D8D2F-1B7D-4E56-ADB8-E782A19695CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F99D8D2F-1B7D-4E56-ADB8-E782A19695CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F99D8D2F-1B7D-4E56-ADB8-E782A19695CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

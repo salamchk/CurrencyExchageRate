@@ -32,8 +32,16 @@ p{
     border-radius: 25px
 }
 
+.select-style:focus{
+    outline:none;
+}
+
 .custom-date {
     background-color: #EEDDFF;
     border: 3px solid #7922CC;
-    border-radius: 25px
+    border-radius: 25px;
+}
+
+.custom-date:focus{
+    outline:none;
 }

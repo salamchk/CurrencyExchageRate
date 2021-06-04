@@ -23,7 +23,7 @@ namespace LocalDbChecker
             var date = dataMap.GetDateTime("date");
 
             var rate = new Rate(new WebApiDataProvider(_uri), new DbDataProvider(_connectionString));
-            rate.GetRates(date, 30);
+            await Task.Run(()=>rate.GetRates(date, 30));
         }
     }
 }
