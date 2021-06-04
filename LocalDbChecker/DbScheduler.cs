@@ -17,11 +17,13 @@ namespace LocalDbChecker
                .UsingJobData("uri", uri)
                .UsingJobData("date", DateTime.Today.ToShortDateString()).Build();
 
+            //Starts 1 time when project is starting
             ITrigger trigger = TriggerBuilder.Create()
           .WithIdentity("Starttrigger", "group1")
           .StartNow()
           .Build();
 
+            //Trigger for updating database every day at 00:00:00
             ITrigger dailyTrigger = TriggerBuilder.Create()
          .WithIdentity("dailyTrigger", "group1")
          .StartNow().WithDailyTimeIntervalSchedule(x=>
